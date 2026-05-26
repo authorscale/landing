@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AuthorScale — Ghostwriting LinkedIn</title>
+<meta name="description" content="Une voix éditoriale forte sur LinkedIn. Construite pour vous. Publiée par vous.">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --noir: #0a0a08;
+    --or: #c9a84c;
+    --or-pale: #e8d5a0;
+    --or-sombre: #8a6f2e;
+    --blanc-casse: #faf7f2;
+    --gris-texte: #6b6458;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { height: 100%; overflow: hidden; }
+
+  body {
+    background: var(--noir);
+    color: var(--blanc-casse);
+    font-family: 'Cormorant Garamond', serif;
+  }
+
+  /* grain */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    opacity: 0.03;
+    pointer-events: none;
+    z-index: 999;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 120px;
+  }
+
+  /* lueur subtile centre */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 700px;
+    height: 400px;
+    background: radial-gradient(ellipse, rgba(201,168,76,0.05) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid rgba(201,168,76,0.08);
+    animation: fadeDown 0.8s ease both;
+  }
+
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    font-style: italic;
+    color: var(--or);
+    letter-spacing: 0.08em;
+    text-decoration: none;
+  }
+
+  /* HERO — centré vertical + horizontal */
+  .hero {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 0 40px 80px;
+    gap: 0;
+  }
+
+  .eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 36px;
+    animation: fadeUp 0.7s 0.15s ease both;
+    opacity: 0;
+  }
+
+  .eyebrow-line {
+    width: 28px;
+    height: 1px;
+    background: var(--or-sombre);
+    opacity: 0.6;
+  }
+
+  .eyebrow span {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--or-sombre);
+  }
+
+  h1 {
+    font-size: clamp(1.9rem, 3.2vw, 2.9rem);
+    font-weight: 300;
+    line-height: 1.25;
+    color: var(--blanc-casse);
+    margin-bottom: 10px;
+    animation: fadeUp 0.7s 0.3s ease both;
+    opacity: 0;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--or-pale);
+    display: block;
+  }
+
+  .sub {
+    font-size: 1rem;
+    color: rgba(160,152,128,0.7);
+    margin-top: 20px;
+    margin-bottom: 44px;
+    line-height: 1.6;
+    animation: fadeUp 0.7s 0.45s ease both;
+    opacity: 0;
+  }
+
+  .cta {
+    display: inline-block;
+    padding: 13px 32px;
+    background: var(--or);
+    color: var(--noir);
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background 0.25s, transform 0.25s;
+    animation: fadeUp 0.7s 0.6s ease both;
+    opacity: 0;
+  }
+
+  .cta:hover {
+    background: var(--or-pale);
+    transform: translateY(-2px);
+  }
+
+  /* bas de page */
+  .footer-bar {
+    position: fixed;
+    bottom: 28px;
+    left: 0; right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 32px;
+    animation: fadeUp 0.7s 0.9s ease both;
+    opacity: 0;
+  }
+
+  .footer-bar a {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    color: rgba(107,100,88,0.5);
+    text-decoration: none;
+    transition: color 0.2s;
+    text-transform: uppercase;
+  }
+
+  .footer-bar a:hover { color: var(--or-sombre); }
+
+  /* scroll indicator */
+  .scroll-indicator {
+    position: fixed;
+    bottom: 64px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    animation: fadeUp 0.7s 1s ease both;
+    opacity: 0;
+  }
+
+  .scroll-indicator .line {
+    width: 1px;
+    height: 32px;
+    background: linear-gradient(to bottom, rgba(138,111,46,0.5), transparent);
+    animation: pulse 2s ease infinite;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.8; }
+  }
+
+  ::-webkit-scrollbar { width: 2px; }
+  ::-webkit-scrollbar-thumb { background: var(--or-sombre); }
+
+  @media (max-width: 480px) {
+    h1 { font-size: 1.7rem; }
+    .hero { padding: 56px 28px 0; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-logo">AuthorScale</a>
+</nav>
+
+<section class="hero">
+  <div class="eyebrow">
+    <div class="eyebrow-line"></div>
+    <span>Ghostwriting LinkedIn · France · 2026</span>
+    <div class="eyebrow-line"></div>
+  </div>
+
+  <h1>
+    Une voix éditoriale forte sur LinkedIn.
+    <em>Construite pour vous. Publiée par vous.</em>
+  </h1>
+
+  <p class="sub">
+    Votre expertise mérite d'être entendue.<br>On s'occupe du reste.
+  </p>
+
+  <a href="https://authorscale.github.io/qualification-authorscale/" class="cta">
+    Prendre contact
+  </a>
+</section>
+
+<div class="footer-bar">
+  <a href="mailto:contact@authorscale.fr">contact@authorscale.fr</a>
+</div>
+
+</body>
+</html>
